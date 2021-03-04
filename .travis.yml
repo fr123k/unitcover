@@ -7,8 +7,13 @@ services:
 before_script:
   - export DISPLAY=:99.0
   # - sh -e /etc/init.d/xvfb start
-  - wget http://dl.bintray.com/sbt/debian/sbt-0.13.5.deb
-  - sudo dpkg -i sbt-0.13.5.deb
+  - echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list
+  - curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo apt-key add
+  - sudo apt-get update
+  - sudo apt-get install sbt
+  - mkdir -p  $HOME/.sbt/launchers/0.13.17/
+  - curl -L -o $HOME/.sbt/launchers/0.13.17/sbt-launch.jar https://dl.bintray.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.13.17/sbt-launch.jar
+  - ls -lha $HOME/.sbt/
 
 after_failure:
   - cat logs/application.log
@@ -28,9 +33,11 @@ notifications:
   email:
     on_success: never
     on_failure: change
+
 cache:
   directories:
-    - $HOME/.ivy2
+    - $HOME/.ivy2/cache
+    - $HOME/.sbt
 
 deploy:
   provider: heroku
