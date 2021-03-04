@@ -35,7 +35,8 @@ ScoverageKeys.excludedPackages in ScoverageCompile := "controllers.javascript;co
 
 javaOptions ++= Seq("-Xmx2G", "-Xms1G", "-XX:+CMSClassUnloadingEnabled"/*, "-verbose:gc", "-XX:+PrintGCDetails", "-XX:+PrintGCTimeStamps"*/, "-XX:+UseConcMarkSweepGC", "-XX:ReservedCodeCacheSize=128M")
 
-resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
+// resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/"
+resolvers += Resolver.typesafeIvyRepo("releases")
 
 resolvers += "JCenter" at "http://jcenter.bintray.com/"
 
@@ -57,6 +58,9 @@ libraryDependencies ++= Seq(
   "org.eclipse.jetty.orbit" % "javax.annotation" % "1.1.0.v201108011116" % "test" artifacts Artifact("javax.annotation", "jar", "jar"),
   "org.eclipse.jetty.aggregate" % "jetty-all-server" % "7.6.3.v20120416" % "test"
 )
+
+libraryDependencies += "com.typesafe" %% "webdriver" % "1.0.0"
+
 
 libraryDependencies ++= Seq(
     "org.hsqldb" %  "hsqldb" % "[2,)",

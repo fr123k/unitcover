@@ -13,7 +13,6 @@ before_script:
   - sudo apt-get install sbt
   - mkdir -p  $HOME/.sbt/launchers/0.13.17/
   - curl -L -o $HOME/.sbt/launchers/0.13.17/sbt-launch.jar https://dl.bintray.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.13.17/sbt-launch.jar
-  - ls -lha $HOME/.sbt/
 
 after_failure:
   - cat logs/application.log
