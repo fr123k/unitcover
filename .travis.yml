@@ -1,27 +1,34 @@
 language: node_js
 script: sbt test && npm test
-node_js:
-- 0.1
+
 before_script:
-- export DISPLAY=:99.0
-- sh -e /etc/init.d/xvfb start
-- wget http://dl.bintray.com/sbt/debian/sbt-0.13.5.deb
-- sudo dpkg -i sbt-0.13.5.deb
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+  - wget http://dl.bintray.com/sbt/debian/sbt-0.13.5.deb
+  - sudo dpkg -i sbt-0.13.5.deb
+
 after_failure:
-- cat logs/application.log
-- scripts/bliss wget -O - https://unitcover.herokuapp.com/scripts/upload.sh | bash /dev/stdin pussinboots unitcover ./target/test-reports/ "test-results.xml test-results-live.xml"
+  - cat logs/application.log
+  - scripts/bliss wget -O - https://unitcover.herokuapp.com/scripts/upload.sh |
+    bash /dev/stdin pussinboots unitcover ./target/test-reports/
+    "test-results.xml test-results-live.xml"
+
 before_deploy:
-- scripts/bliss wget -O - https://unitcover.herokuapp.com/scripts/upload.sh | bash /dev/stdin pussinboots unitcover ./target/test-reports/  "test-results.xml test-results-live.xml"
-- ls -lha ./
-- if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-- ls -lha ./
+  - scripts/bliss wget -O - https://unitcover.herokuapp.com/scripts/upload.sh |
+    bash /dev/stdin pussinboots unitcover
+    ./target/test-reports/  "test-results.xml test-results-live.xml"
+  - ls -lha ./
+  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
+  - ls -lha ./
+
 notifications:
   email:
     on_success: never
     on_failure: change
 cache:
   directories:
-  - $HOME/.ivy2
+    - $HOME/.ivy2
+
 deploy:
   provider: heroku
   app: unitcover
@@ -29,5 +36,6 @@ deploy:
   strategy: git
   api_key:
     secure: D1OyD4rxP9TAvmbYtHHFdRJHuNdoaiuEHmex1QRylqYO3nggelDSBbogajAZPlbwHANkCOnHIPEEgP3zSthjKSZd2xWik7bYUSxYn3RmdQydIxq4NKoINoNeYoRSaRpXjcDxL9gr05B4C/qAd1s9UoAE/d01S+Dgdu12tGkH9Xg=
+
 after_deploy:
- - scripts/karma.sh e2elive
+  - scripts/karma.sh e2elive
