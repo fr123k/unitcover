@@ -1,9 +1,12 @@
 language: node_js
 script: sbt test && npm test
 
+services:
+  - xvfb
+
 before_script:
   - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+  # - sh -e /etc/init.d/xvfb start
   - wget http://dl.bintray.com/sbt/debian/sbt-0.13.5.deb
   - sudo dpkg -i sbt-0.13.5.deb
 
